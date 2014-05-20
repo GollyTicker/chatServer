@@ -1,4 +1,4 @@
-package Client.GUI;
+package client.GUI;
 
 /**
  * Created by Swaneet on 20.05.2014.
