@@ -1,11 +1,11 @@
-/**
+package Client; /**
  * Created by Swaneet on 19.05.2014.
  */
 
 import java.io.*;
 import java.net.*;
 
-public class UDPClient {
+public class dummy_UDPClient {
     public static void main(String[] args) throws IOException {
         BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
