@@ -52,7 +52,7 @@ public class ServerThread extends Thread {
                         receivedBYE = true;
                     } else if (command.equals(ClientProtocol.INFO)) {
                         // if the command is info, then make userList
-                        send = list(ServerMain.activeUsers);
+                        send = list();
                     }
                 }
                 // ******************* END Main Commands ***************************
@@ -73,7 +73,7 @@ public class ServerThread extends Thread {
         if (user != null) {  // if user is already defined
             return error("You have already registered as " + user.name);
         } else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
-            if (!ServerMain.activeUsers.contains(tokens.get(1))) {  // make sure the user doesnt already exist
+            if (!ServerMain.userIsRegistered(tokens.get(1))) {  // make sure the user doesnt already exist
                 user = new User(tokens.get(1), socket.getInetAddress());    // create the user and store it in the list
                 ServerMain.addUser(user);
                 return ok();

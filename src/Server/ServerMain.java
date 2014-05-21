@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.net.InetAddress.getByName;
+
 /**
  * Created by Swaneet on 20.05.2014.
  */
@@ -29,6 +31,13 @@ public class ServerMain {
     public static synchronized List<User> getImmutableCopyOfUsers() {
         return new ArrayList<User>(activeUsers);
     }
+    public static synchronized boolean userIsRegistered(String s) {
+        for(User u:activeUsers) {
+            if(u.name.equals(s))
+                return true;
+        }
+        return false;
+    }
 
     private ServerMain() {
     }
@@ -36,7 +45,7 @@ public class ServerMain {
     public void serverRun() throws IOException {
         // default users
         /*
-        activeUsers.add(new User("Hadsfsd", getByName("localhost")));
+        activeUsers.add(new User("IvanMorozov", getByName("localhost")));
         activeUsers.add(new User("Blubb", getByName("haw-hamburg.de")));
         activeUsers.add(new User("Denkte", getByName("desy.de")));
         */
@@ -61,5 +70,4 @@ public class ServerMain {
             System.out.println(e.getMessage());
         }
     }
-
 }
