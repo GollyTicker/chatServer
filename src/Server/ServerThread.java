@@ -34,7 +34,7 @@ public class ServerThread extends Thread {
                 List<String> tokens = tokenize(recv);
                 String command = tokens.get(0);
                 String send = error("Unknown Command");
-                if (tokens.size() < 0) {
+                if (tokens.size() > 0) {
                     if (command.equals(ClientProtocol.NEW)) {
                         if (user != null) {  // if user is already defined
                             send = error("You have already registered as " + user.name);

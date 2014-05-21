@@ -45,6 +45,10 @@ public class ServerProtocol {
         return s;
     }
 
+    public static boolean isSucess(List<String> ls) {
+        return ls.get(0).equals(OK);
+    }
+
 
 
 }
