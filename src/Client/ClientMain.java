@@ -14,7 +14,7 @@ public class ClientMain {
 
     public static void main(String[] args) {
         GUIThread guiThread = new GUIThread();
-        TCPThread tcp = new TCPThread(ServerProtocol.TCP_HOSTNAME, ServerProtocol.TCP_PORT);
+        TCPThread tcp = new TCPThread(ServerProtocol.TCP_HOSTNAME, ServerProtocol.TCP_PORT, guiThread);
         UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT);
         guiThread.start();
         tcp.start();
