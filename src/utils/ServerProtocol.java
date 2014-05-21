@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class ServerProtocol {
     public static final String SPACE = " ";
 
     public static String list(List<User> ls) {
-        return LIST + SPACE +  "hier die users und dessen hosts";
+        return LIST + SPACE +  "(hier die users und dessen hosts)";
     }
 
     public static String ok() {
@@ -33,6 +34,15 @@ public class ServerProtocol {
 
     public static String bye() {
         return BYE;
+    }
+
+    public static List<String> tokenize(String input) {
+        String[] a = input.split(" ");
+        List<String> s = new ArrayList<String>();
+        for(String str:a){
+            s.add(str);
+        }
+        return s;
     }
 
 
