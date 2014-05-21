@@ -1,4 +1,4 @@
-package server;
+package Server;
 
 import utils.ClientProtocol;
 import utils.User;

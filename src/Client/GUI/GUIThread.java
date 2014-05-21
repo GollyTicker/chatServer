@@ -1,6 +1,6 @@
-package client.GUI;
+package Client.GUI;
 
-import client.Storage;
+import Client.Storage;
 
 /**
  * Created by Swaneet on 20.05.2014.

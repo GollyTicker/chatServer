@@ -1,9 +1,4 @@
-package client.GUI;
-
-import client.ChatMsg;
-import utils.User;
-
-import java.util.List;
+package Client.GUI;
 
 /**
  * Created by Swaneet on 20.05.2014.

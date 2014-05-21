@@ -1,6 +1,6 @@
-package client.GUI;
+package Client.GUI;
 
-import client.ChatMsg;
+import Client.ChatMsg;
 import utils.User;
 
 import java.util.List;

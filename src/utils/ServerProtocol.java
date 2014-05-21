@@ -1,6 +1,6 @@
 package utils;
 
-import server.ServerMain;
+import Server.ServerMain;
 
 import java.util.ArrayList;
 import java.util.List;

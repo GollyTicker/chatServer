@@ -1,6 +1,6 @@
-package client;
+package Client;
 
-import client.GUI.StorageServices;
+import Client.GUI.StorageServices;
 import utils.User;
 
 import java.util.ArrayList;

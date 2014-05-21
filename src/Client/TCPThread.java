@@ -1,8 +1,7 @@
-package client;
+package Client;
 
-import client.GUI.GUIServices;
-import client.GUI.StorageServices;
-import utils.ServerProtocol;
+import Client.GUI.GUIServices;
+import Client.GUI.StorageServices;
 import utils.User;
 
 import java.io.*;

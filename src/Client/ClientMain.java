@@ -1,11 +1,8 @@
-package client;
+package Client;
 
-import client.GUI.GUIThread;
+import Client.GUI.GUIThread;
 import utils.ClientProtocol;
 import utils.ServerProtocol;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Swaneet on 20.05.2014.
