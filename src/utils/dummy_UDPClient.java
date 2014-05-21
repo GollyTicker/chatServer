@@ -1,4 +1,4 @@
-package Client; /**
+package utils; /**
  * Created by Swaneet on 19.05.2014.
  */
 
