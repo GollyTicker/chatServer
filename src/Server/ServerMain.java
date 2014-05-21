@@ -6,50 +6,39 @@ import utils.User;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Swaneet on 20.05.2014.
  */
 public class ServerMain {
 
-    // ReadFcWriteFs stream;
     static ServerSocket welcomeSocket;
 
-    public static Set<User> activeUsers;
+    public static List<User> activeUsers = new LinkedList<User>();
 
-    public ServerMain() {
-        initializeServer();
-        activeUsers = new HashSet<User>();
+    private ServerMain() {
     }
 
-    private void initializeServer() {
-        try {
-            welcomeSocket = new ServerSocket(ServerProtocol.TCP_PORT);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void serverRun() throws IOException {
+        welcomeSocket = new ServerSocket(ServerProtocol.TCP_PORT);
+        while (true) {
+            handleNewClients();
         }
     }
 
-    private void handleNewClients() {
+    public static void main(String[] args) throws IOException {
+        new ServerMain().serverRun();
+    }
+
+    private void handleNewClients() throws IOException {
         try {
             Socket clientSocket = welcomeSocket.accept();
             new ServerThread(clientSocket).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void serverRun() {
-        while (true) {
-            handleNewClients();
-        }
-    }
-
-    public static void main(String[] args) {
-        ServerMain s = new ServerMain();
-        s.serverRun();
     }
 
 }

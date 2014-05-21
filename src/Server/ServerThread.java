@@ -53,7 +53,7 @@ public class ServerThread extends Thread {
                         send = bye();
                         receivedBYE = true;
                     } else if (command.equals(ClientProtocol.INFO)) {
-                        // TODO: list of users and their hosts
+                        send = list(ServerMain.activeUsers);
                     }
                 }
 

@@ -28,5 +28,4 @@ public class ClientProtocol {
     public static String bye() {
         return BYE;
     }
-
 }

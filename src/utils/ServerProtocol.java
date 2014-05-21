@@ -1,5 +1,7 @@
 package utils;
 
+import server.ServerMain;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,8 @@ public class ServerProtocol {
     public static final String SPACE = " ";
 
     public static String list(List<User> ls) {
-        return LIST + SPACE +  "(hier die users und dessen hosts)";
+        int numberOfUsers = ServerMain.activeUsers.size();
+        return LIST + SPACE +  numberOfUsers + SPACE + "(hier die users und dessen hosts)";
     }
 
     public static String ok() {
