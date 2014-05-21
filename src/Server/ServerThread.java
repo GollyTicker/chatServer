@@ -26,20 +26,19 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
+        System.out.println("New Thread at time: " + System.currentTimeMillis());
         initReaderPrinter();
-        while(clientConnected()) {
+        while (clientConnected()) {
             try {
                 String recv = reader.readLine();
                 List<String> tokens = tokenize(recv);
                 String command = tokens.get(0);
-
-                String send = "";
-                if(tokens.size() < 0 ) {
+                String send = error("Unknown Command");
+                if (tokens.size() < 0) {
                     if (command.equals(ClientProtocol.NEW)) {
-                        if(user != null) {  // if user is already defined
+                        if (user != null) {  // if user is already defined
                             send = error("You have already registered as " + user.name);
-                        }
-                        else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
+                        } else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
                             String userName = tokens.get(1);
                             InetAddress userAddress = socket.getInetAddress();
                             // TODO: check if user already exists in the list
@@ -56,14 +55,29 @@ public class ServerThread extends Thread {
                     } else if (command.equals(ClientProtocol.INFO)) {
                         // TODO: list of users and their hosts
                     }
-                    printer.println(send);
                 }
 
+                System.out.println("Sending: " + send);
+                println(send);
             } catch (IOException e) {
                 e.printStackTrace();
                 receivedBYE = true;
             }
-            // if got a BYE, then disconnect
+        }
+        closeAll();
+    }
+
+    private void println(String str) {
+        printer.println(str);
+        printer.flush();
+    }
+
+    private void closeAll() {
+        try {
+            reader.close();
+            printer.close();
+            socket.close();
+        } catch (IOException e) {
         }
     }
 

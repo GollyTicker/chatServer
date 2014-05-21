@@ -22,8 +22,22 @@ public class TCPThread extends Thread {
     @Override
     public void run() {
         if(connectionToServerSuceeded()){
-            printer.println(new_("Morozov"));
+            println(new_("Morozov"));
+            System.out.println("Sent Morozov");
+            try {
+                String recv = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // println(info());
+
         }
+    }
+
+    private void println(String s) {
+        printer.println(s);
+        printer.flush();
     }
 
     private boolean connectionToServerSuceeded() {
