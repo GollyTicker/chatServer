@@ -2,6 +2,7 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
+import static utils.ClientProtocol.*;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -9,7 +10,7 @@ import java.net.Socket;
 public class TCPThread extends Thread {
     Socket socket;
     BufferedReader reader;
-    PrintWriter writer;
+    PrintWriter printer;
     String tcpHostname;
     int tcpPort;
 
@@ -21,7 +22,7 @@ public class TCPThread extends Thread {
     @Override
     public void run() {
         if(connectionToServerSuceeded()){
-
+            printer.println(new_("Morozov"));
         }
     }
 
@@ -30,7 +31,7 @@ public class TCPThread extends Thread {
             this.socket = new Socket(tcpHostname, tcpPort);
             reader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(
+            printer = new PrintWriter(
                     new OutputStreamWriter(socket.getOutputStream()));
             return true;
         } catch (IOException e) {
