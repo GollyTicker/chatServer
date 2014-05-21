@@ -5,7 +5,10 @@ import Client.GUI.StorageServices;
 import utils.User;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static utils.ClientProtocol.*;
@@ -42,7 +45,8 @@ public class TCPThread extends Thread {
                 try {
                     List<String> tokens = readFromServer();
                     int numOfUsers = Integer.parseInt(tokens.get(1));
-                    List<User> users = fromTokens(numOfUsers, tokens.subList(2,2 + 2*numOfUsers));
+                    List<User> users = fromTokens(numOfUsers, tokens.subList(2,tokens.size()));
+                    System.out.println("Users: " + users);
                     storageServices.saveUserList(users);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -73,9 +77,13 @@ public class TCPThread extends Thread {
         return tokenize(reader.readLine());
     }
 
-    private List<User> fromTokens(int numOfUsers, List<String> strings) {
-        // TODO:
-        return null;
+    private List<User> fromTokens(int numOfUsers, List<String> strings) throws UnknownHostException {
+        List<User> ls = new ArrayList<User>();
+        for(int i = 0; i < numOfUsers*2; i+=2) {
+            User u = new User(strings.get(i), InetAddress.getByName(strings.get(i+1)));
+            ls.add(u);
+        }
+        return ls;
     }
 
     private void registerName() {
@@ -87,7 +95,7 @@ public class TCPThread extends Thread {
             try {
                 tokens = readFromServer();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
                 keepRunning = false;
                 break;
             }
@@ -125,8 +133,7 @@ public class TCPThread extends Thread {
                     new OutputStreamWriter(socket.getOutputStream()));
             return true;
         } catch (IOException e) {
-            System.out.println("Connection failure.");
-            e.printStackTrace();
+            System.out.println("Connection failure: " + e.getMessage());
             return false;
         }
     }

@@ -23,8 +23,14 @@ public class ServerProtocol {
     public static final String SPACE = " ";
 
     public static String list(List<User> ls) {
-        int numberOfUsers = ServerMain.activeUsers.size();
-        return LIST + SPACE +  numberOfUsers + SPACE + "(hier die users und dessen hosts)";
+        List<User> users = ServerMain.getImmutableCopyOfUsers();
+        int numberOfUsers = users.size();
+        StringBuilder sb = new StringBuilder();
+        for (User u:users) {
+            sb.append(SPACE);
+            sb.append(u.toString());
+        }
+        return LIST + SPACE +  numberOfUsers + sb.toString();
     }
 
     public static String ok() {

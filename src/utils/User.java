@@ -18,7 +18,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         try {
-            return ((User) o).name.equals(name);
+            User u = (User)o;
+            return u.name == name && u.host == host;
         } catch (Exception e) {
             return false;
         }
@@ -26,6 +27,6 @@ public class User {
 
     @Override
     public String toString() {
-        return name + host;
+        return name + ServerProtocol.SPACE + host.getCanonicalHostName();
     }
 }

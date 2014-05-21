@@ -4,10 +4,15 @@ import utils.ServerProtocol;
 import utils.User;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.net.InetAddress.getByName;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -26,10 +31,21 @@ public class ServerMain {
         activeUsers.add(u);
     }
 
+    public static synchronized List<User> getImmutableCopyOfUsers() {
+        return new ArrayList<User>(activeUsers);
+    }
+
     private ServerMain() {
     }
 
     public void serverRun() throws IOException {
+        // default users
+        /*
+        activeUsers.add(new User("Hadsfsd", getByName("localhost")));
+        activeUsers.add(new User("Blubb", getByName("haw-hamburg.de")));
+        activeUsers.add(new User("Denkte", getByName("desy.de")));
+        */
+
         welcomeSocket = new ServerSocket(ServerProtocol.TCP_PORT);
         while (true) {
             handleNewClients();
@@ -45,7 +61,7 @@ public class ServerMain {
             Socket clientSocket = welcomeSocket.accept();
             new ServerThread(clientSocket).start();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

@@ -51,7 +51,7 @@ public class ServerThread extends Thread {
 
                 println(send);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
                 receivedBYE = true;
             }
         }
