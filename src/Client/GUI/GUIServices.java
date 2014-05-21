@@ -8,8 +8,6 @@ public interface GUIServices {
 
     public String getUserName();    // blockierender Aufruf der solange wartet bis ein Username eingegeben wurde
 
-    public String readChatLine();  // blokierender Aufruf welcher die nächste eingegebene Zeile einliest
-
-    public void nameRegistrationResponse(String msg);   // der TCP thred kann hier die Antwort auf die Anfrage versenden
+    public void nameRegistrationResponse(String msg);   // der TCP Thread kann hier die Antwort auf die Anfrage versenden
 
 }

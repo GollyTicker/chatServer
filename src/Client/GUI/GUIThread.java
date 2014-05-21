@@ -1,6 +1,6 @@
 package Client.GUI;
 
-import Client.Storage;
+import Client.ThreadSafeData.Storage;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -18,13 +18,13 @@ public class GUIThread extends Thread implements GUIServices {
 
     @Override
     public String getUserName() {
-        // TODO: implement method
+        // TODO: wait until user enters a name.
         return "IvanMorozov";
     }
 
     @Override
-    public String readChatLine() {
-        // TODO: implement method
+    public String readChatLine() {  // not called yet!
+        // TODO: wait until the user enters a new chatline
         return "I wrote a line here!";
     }
 

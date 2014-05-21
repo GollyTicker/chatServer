@@ -15,6 +15,9 @@ public interface StorageServices {
     // die GUI kann sich hier die Chat Nachrichten holen
     public List<ChatMsg> getMessages();
 
+    // the UDP thread can add new Messages here
+    public void addChatMessage(ChatMsg msg);
+
     // die GUI kann sich hier die Liste der aktuell registrierten User holen
     public List<User> getUserList();
 
