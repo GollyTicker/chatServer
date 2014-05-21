@@ -33,41 +33,51 @@ public class ServerThread extends Thread {
                 String recv = reader.readLine();
                 List<String> tokens = tokenize(recv);
                 String command = tokens.get(0);
-                String send = error("Unknown Command");
+                String send = error("Unknown Command"); // standant response if no command was recognzied.
+
+                // ******************* Main Commands ***************************
                 if (tokens.size() > 0) {
                     if (command.equals(ClientProtocol.NEW)) {
-                        if (user != null) {  // if user is already defined
-                            send = error("You have already registered as " + user.name);
-                        } else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
-                            String userName = tokens.get(1);
-                            InetAddress userAddress = socket.getInetAddress();
-                            // TODO: check if user already exists in the list
-                            user = new User(userName, userAddress);
-                            ServerMain.activeUsers.add(user);
-                            send = ok();
-                        } else { // if no name was given or it contained space characters
-                            send = error("Invalid Input");
-                        }
+                        send = tryNewUser(tokens);
                     } else if (command.equals(ClientProtocol.BYE)) {
-                        ServerMain.activeUsers.remove(user);
+                        ServerMain.removeUser(user);
                         send = bye();
                         receivedBYE = true;
                     } else if (command.equals(ClientProtocol.INFO)) {
                         send = list(ServerMain.activeUsers);
                     }
                 }
+                // ******************* END Main Commands ***************************
 
-                System.out.println("Sending: " + send);
                 println(send);
             } catch (IOException e) {
                 e.printStackTrace();
                 receivedBYE = true;
             }
         }
+        ServerMain.removeUser(user);
         closeAll();
     }
 
+    private String tryNewUser(List<String> tokens) {
+        if (user != null) {  // if user is already defined
+            return error("You have already registered as " + user.name);
+        } else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
+            if (!ServerMain.activeUsers.contains(tokens.get(1))) {  // make sure the user doesnt already exist
+                user = new User(tokens.get(1), socket.getInetAddress());    // create the user and store it in the list
+                ServerMain.addUser(user);
+                return ok();
+            }
+            else {
+                return error(tokens.get(1) + " already used.");
+            }
+        } else { // if no name was given or it contained space characters
+            return error("Invalid Username" + tokens);
+        }
+    }
+
     private void println(String str) {
+        System.out.println("To " + user + " send:" + str);
         printer.println(str);
         printer.flush();
     }
@@ -82,7 +92,7 @@ public class ServerThread extends Thread {
     }
 
     private boolean isValidUsername(String s) {
-        return s.matches("[A-Za-z0-9]{1,12}");
+        return s.matches("[A-Za-z0-9]{1,35}");
     }
 
     private boolean clientConnected() {

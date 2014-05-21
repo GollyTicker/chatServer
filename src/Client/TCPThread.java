@@ -36,12 +36,10 @@ public class TCPThread extends Thread {
     @Override
     public void run() {
         if (connectionToServerSuceeded()) {
+            registerName();
             while (storageServices.isRunning()) {
-                registerName();
-
                 println(info());
                 try {
-
                     List<String> tokens = readFromServer();
                     int numOfUsers = Integer.parseInt(tokens.get(1));
                     List<User> users = fromTokens(numOfUsers, tokens.subList(2,2 + 2*numOfUsers));
@@ -50,16 +48,24 @@ public class TCPThread extends Thread {
                     e.printStackTrace();
                     storageServices.stop();
                 }
-
-                println(bye());
                 try {
-                    reader.readLine();
-                } catch (IOException e) {
+                    Thread.sleep(CLIENT_INFO_WAIT_MS);
+                } catch (InterruptedException e) {
+                    break;
                 }
-                storageServices.stop();
             }
+            sendByeToServer();
             closeAll();
         }
+    }
+
+    private void sendByeToServer() {
+        println(bye());
+        try {
+            reader.readLine();  // receive response and ignore it
+        } catch (IOException e) {
+        }
+        storageServices.stop(); // sicherheitshalber nochmal stoppen
     }
 
 

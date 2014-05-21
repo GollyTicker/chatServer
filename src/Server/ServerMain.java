@@ -16,7 +16,15 @@ public class ServerMain {
 
     static ServerSocket welcomeSocket;
 
-    public static List<User> activeUsers = new LinkedList<User>();
+    public static volatile List<User> activeUsers = new LinkedList<User>();
+
+    public static synchronized void removeUser(User u) {
+        activeUsers.remove(u);
+    }
+
+    public static synchronized void addUser(User u) {
+        activeUsers.add(u);
+    }
 
     private ServerMain() {
     }
