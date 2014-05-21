@@ -1,6 +1,6 @@
-package Client;
+package Client.ThreadSafeData;
 
-import Client.GUI.StorageServices;
+import Client.ChatMsg;
 import utils.User;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class Storage implements StorageServices {
     private static volatile List<User> users = new ArrayList<User>();
 
     @Override
-    public synchronized List<ChatMsg> getMesseages() {
+    public synchronized List<ChatMsg> getMessages() {
         return msgs;
     }
 
