@@ -35,4 +35,9 @@ public class Storage implements StorageServices {
     public synchronized List<User> getUserList() {
         return users;
     }
+
+    @Override
+    public synchronized void saveUserList(List<User> users) {
+        this.users = users;
+    }
 }
