@@ -35,11 +35,17 @@ public class TCPThread extends Thread {
     @Override
     public void run() {
         if (connectionToServerSuceeded()) {
-            while (keepRunning) {
+            while (storageServices.isRunning()) {
                 registerName();
 
                 // System.out.println(tokens);
                 println(info());
+                try {
+                    System.out.println(tokenize(reader.readLine()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    storageServices.stop();
+                }
 
             }
             closeAll();

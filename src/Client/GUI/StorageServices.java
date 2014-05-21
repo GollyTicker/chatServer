@@ -14,4 +14,8 @@ public interface StorageServices {
     public List<ChatMsg> getMesseages();
 
     public List<User> getUserList();
+
+    public boolean isRunning();
+
+    public void stop();
 }
