@@ -29,4 +29,9 @@ public class ClientProtocol {
     public static String bye() {
         return BYE;
     }
+
+    // is a response a success?
+    public static boolean isSucess(List<String> ls) {
+        return ls.get(0).equals(ServerProtocol.OK);
+    }
 }

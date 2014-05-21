@@ -9,6 +9,8 @@ public class User {
     public String name;
     public InetAddress host;
 
+    // A User is made of its name and his ip address.
+
     public User(String userName, InetAddress userAddress) {
         name = userName;
         host = userAddress;

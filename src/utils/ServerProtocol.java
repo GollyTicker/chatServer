@@ -22,6 +22,7 @@ public class ServerProtocol {
     public static final String NEWLINE = "\r\n";
     public static final String SPACE = " ";
 
+    // implements the list response
     public static String list(List<User> ls) {
         List<User> users = ServerMain.getImmutableCopyOfUsers();
         int numberOfUsers = users.size();
@@ -33,18 +34,23 @@ public class ServerProtocol {
         return LIST + SPACE +  numberOfUsers + sb.toString();
     }
 
+    // implements the ok response
     public static String ok() {
         return OK;
     }
 
+    // implements the error response
     public static String error(String message) {
         return (ERROR + SPACE + message);
     }
 
+    // implements the bye response
     public static String bye() {
         return BYE;
     }
 
+    // turns a read line into space separated tokens.
+    // f.e. "NEW IvanMorozov slkdflskdf blubb hahe" => ["NEW", "IvanMorozov", "slkdflskdf", "blubb", "hahe"]
     public static List<String> tokenize(String input) {
         String[] a = input.split(" ");
         List<String> s = new ArrayList<String>();
@@ -52,10 +58,6 @@ public class ServerProtocol {
             s.add(str);
         }
         return s;
-    }
-
-    public static boolean isSucess(List<String> ls) {
-        return ls.get(0).equals(OK);
     }
 
 
