@@ -10,10 +10,12 @@ import utils.ServerProtocol;
 public class ClientMain {
 
     public static void main(String[] args) {
-        Thread guiThread = new Thread(new GUIThread());
+        GUIThread guiThread = new GUIThread();
         TCPThread tcp = new TCPThread(ServerProtocol.TCP_HOSTNAME, ServerProtocol.TCP_PORT);
         UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT);
         guiThread.start();
+        tcp.start();
+        udp.start();
     }
 
 }
