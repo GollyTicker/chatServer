@@ -18,14 +18,17 @@ public class ClientProtocol {
     public static final String SPACE = " ";
     public static final int CLIENT_INFO_WAIT_MS = 3500; // millis to wait for sending INFO requests
 
+    // makes new request
     public static String new_(String userName) {
         return NEW + SPACE + userName;
     }
 
+    // maked info request
     public static String info() {
         return INFO;
     }
 
+    // makes bye request
     public static String bye() {
         return BYE;
     }
