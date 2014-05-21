@@ -15,6 +15,8 @@ public interface StorageServices {
 
     public List<User> getUserList();
 
+    public void saveUserList(List<User> users);
+
     public boolean isRunning();
 
     public void stop();

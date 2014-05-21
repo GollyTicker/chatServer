@@ -3,6 +3,7 @@ package client;
 import client.GUI.GUIServices;
 import client.GUI.StorageServices;
 import utils.ServerProtocol;
+import utils.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static utils.ClientProtocol.*;
 import static utils.ServerProtocol.*;
+import static utils.ServerProtocol.bye;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -38,18 +40,37 @@ public class TCPThread extends Thread {
             while (storageServices.isRunning()) {
                 registerName();
 
-                // System.out.println(tokens);
                 println(info());
                 try {
-                    System.out.println(tokenize(reader.readLine()));
-                } catch (IOException e) {
+
+                    List<String> tokens = readFromServer();
+                    int numOfUsers = Integer.parseInt(tokens.get(1));
+                    List<User> users = fromTokens(numOfUsers, tokens.subList(2,2 + 2*numOfUsers));
+                    storageServices.saveUserList(users);
+                } catch (Exception e) {
                     e.printStackTrace();
                     storageServices.stop();
                 }
 
+                println(bye());
+                try {
+                    reader.readLine();
+                } catch (IOException e) {
+                }
+                storageServices.stop();
             }
             closeAll();
         }
+    }
+
+
+    private List<String> readFromServer() throws IOException {
+        return tokenize(reader.readLine());
+    }
+
+    private List<User> fromTokens(int numOfUsers, List<String> strings) {
+        // TODO:
+        return null;
     }
 
     private void registerName() {
@@ -59,7 +80,7 @@ public class TCPThread extends Thread {
             System.out.println("Sent: " + userName);
             List<String> tokens;
             try {
-                tokens = ServerProtocol.tokenize(reader.readLine());
+                tokens = readFromServer();
             } catch (IOException e) {
                 e.printStackTrace();
                 keepRunning = false;
