@@ -10,8 +10,11 @@ import java.util.List;
  */
 public interface GUIServices {
     // methoden, die die GUI den TCP/UDP threads anbietet
+
+    public String getUserName();    // blockierender Aufruf der solange wartet bis ein Username eingegeben wurde
+
     public String readChatLine(); // blokierender Aufruf welcher die nächste eingegebene Zeile einliest
 
-    public void nameRegistrationResponse(boolean s);
+    public void nameRegistrationResponse(String msg);
 
 }

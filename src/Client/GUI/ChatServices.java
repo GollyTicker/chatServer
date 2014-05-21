@@ -11,8 +11,6 @@ import java.util.List;
 public interface ChatServices {
     // methoden, die die TCP, UDP threads der GUI anbieten.
 
-    public void tryRegisterName(String username);
-
     public List<ChatMsg> getMesseages();
 
     public List<User> getUserList();
