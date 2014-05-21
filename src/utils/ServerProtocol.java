@@ -23,7 +23,7 @@ public class ServerProtocol {
     public static final String SPACE = " ";
 
     // implements the list response
-    public static String list(List<User> ls) {
+    public static String list() {
         List<User> users = ServerMain.getImmutableCopyOfUsers();
         int numberOfUsers = users.size();
         StringBuilder sb = new StringBuilder();

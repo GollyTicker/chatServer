@@ -1,6 +1,6 @@
 package Client;
 
-import Client.GUI.StorageServices;
+import Client.ThreadSafeData.StorageServices;
 
 /**
  * Created by Swaneet on 20.05.2014.

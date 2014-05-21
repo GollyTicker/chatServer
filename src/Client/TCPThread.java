@@ -1,7 +1,7 @@
 package Client;
 
 import Client.GUI.GUIServices;
-import Client.GUI.StorageServices;
+import Client.ThreadSafeData.StorageServices;
 import utils.User;
 
 import java.io.*;
@@ -25,7 +25,6 @@ public class TCPThread extends Thread {
     String tcpHostname;
     int tcpPort;
     GUIServices guiServices;
-    public boolean keepRunning = true;
     String registeredUsername;
     StorageServices storageServices;
 
@@ -38,29 +37,36 @@ public class TCPThread extends Thread {
 
     @Override
     public void run() {
-        if (connectionToServerSuceeded()) {
-            registerName();
-            while (storageServices.isRunning()) {
-                println(info());
-                try {
-                    List<String> tokens = readFromServer();
-                    int numOfUsers = Integer.parseInt(tokens.get(1));
-                    List<User> users = fromTokens(numOfUsers, tokens.subList(2,tokens.size()));
-                    System.out.println("Users: " + users);
-                    storageServices.saveUserList(users);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    storageServices.stop();
-                }
-                try {
-                    Thread.sleep(CLIENT_INFO_WAIT_MS);
-                } catch (InterruptedException e) {
-                    break;
-                }
+        // falls Connection fehlschlägt, dann brich ab.
+        if (!connectionToServerSuceeded()) return;
+
+        // ask for name (mutltiple times).
+        // wird erfolgreich, oder bricht mit storageService.stop() ab.
+        registerName();
+
+        //
+        while (storageServices.isRunning()) {
+            try {
+                println(info());    // send the server an info command
+                List<String> tokens = readFromServer(); //  get response
+                updateLocalUserList(tokens);
+                Thread.sleep(CLIENT_INFO_WAIT_MS);  // wait a few seconds
+            } catch (Exception e) { // if anything goes wrong. safe-kill the app.
+                e.printStackTrace();
+                storageServices.stop();
             }
-            sendByeToServer();
-            closeAll();
         }
+        // if the app is supposed to stop, then send a BYE message to the server
+        // and close the resources
+        sendByeToServer();
+        closeAll();
+    }
+
+    private void updateLocalUserList(List<String> tokens) throws UnknownHostException {
+        int numOfUsers = Integer.parseInt(tokens.get(1));   // get the size of the userlist
+        List<User> users = fromTokens(numOfUsers, tokens.subList(2, tokens.size())); // parse the userlist
+        System.out.println("Users: " + users);
+        storageServices.saveUserList(users);    // save the new list
     }
 
     private void sendByeToServer() {
@@ -72,40 +78,45 @@ public class TCPThread extends Thread {
         storageServices.stop(); // sicherheitshalber nochmal stoppen
     }
 
-
+    // liest vom Server und gibt Tokens zurück anstatt den reinen String
     private List<String> readFromServer() throws IOException {
         return tokenize(reader.readLine());
     }
 
+    // ["IvanMorozov", "127.0.0.1", "SwaneetSahoo", "123.222.222.111"]
+    // => [User(IvanMorozov, 127.0.0.1), User(SwaneetSahoo, 123.222.222.111)]
     private List<User> fromTokens(int numOfUsers, List<String> strings) throws UnknownHostException {
         List<User> ls = new ArrayList<User>();
-        for(int i = 0; i < numOfUsers*2; i+=2) {
-            User u = new User(strings.get(i), InetAddress.getByName(strings.get(i+1)));
+        for (int i = 0; i < numOfUsers * 2; i += 2) {
+            User u = new User(strings.get(i), InetAddress.getByName(strings.get(i + 1)));
             ls.add(u);
         }
         return ls;
     }
 
+    // asks the GUI for a name and
+    // tries the name out on the server.
+    // it responds the result to the GUI with nameRegistrationResponse(String msg)
+    // It keeps asking for a name until the the app is to be closed or
+    // a name could be found.
     private void registerName() {
-        while (registeredUsername == null) {
+        while (registeredUsername == null && storageServices.isRunning()) {
             String userName = guiServices.getUserName();    // blokierender Aufruf der auf den UserNamen wartet.
-            println(new_(userName));
+            println(new_(userName));    // send to the server
             System.out.println("Sent: " + userName);
             List<String> tokens;
             try {
                 tokens = readFromServer();
+                System.out.println("Recv: " + tokens);
+                if (isSucess(tokens)) {  // if the registration succeeded
+                    registeredUsername = userName;  // save the username. this will also end the loop.
+                    guiServices.nameRegistrationResponse(OK);       // tell the gui, that it was successful.
+                } else {
+                    guiServices.nameRegistrationResponse(tokens.get(1));    // tell the gui that it failed and start from beginning of loop
+                }
             } catch (IOException e) {
                 System.err.println(e.getMessage());
-                keepRunning = false;
-                break;
-            }
-            System.out.println("Recv: " + tokens);
-            if(isSucess(tokens)) {  // if the registration succeeded
-                registeredUsername = userName;  // save the username. this will also end the loop.
-                guiServices.nameRegistrationResponse(OK);   // tell this to the gui
-            }
-            else {
-                guiServices.nameRegistrationResponse(tokens.get(1));    // tell the gui that it failed and start from beginning
+                storageServices.stop();
             }
         }
     }
@@ -119,6 +130,7 @@ public class TCPThread extends Thread {
         }
     }
 
+    // flushenddes Println(genauso wie bei Server)
     private void println(String s) {
         printer.println(s);
         printer.flush();
