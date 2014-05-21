@@ -1,7 +1,14 @@
 package server;
 
+import utils.ClientProtocol;
+import utils.User;
+
+import static utils.ServerProtocol.*;
+
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -9,7 +16,9 @@ import java.net.Socket;
 public class ServerThread extends Thread {
     Socket socket;
     BufferedReader reader;
-    PrintWriter writer;
+    PrintWriter printer;
+    private boolean receivedBYE = false;
+    private User user;
 
     public ServerThread(Socket clientSocket) {
         socket = clientSocket;
@@ -17,14 +26,60 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        initReaderWriter();
+        initReaderPrinter();
+        while(clientConnected()) {
+            try {
+                String recv = reader.readLine();
+                List<String> tokens = tokenize(recv);
+                String command = tokens.get(0);
+
+                String send = "";
+                if(tokens.size() < 0 ) {
+                    if (command.equals(ClientProtocol.NEW)) {
+                        if(user != null) {  // if user is already defined
+                            send = error("You have already registered as " + user.name);
+                        }
+                        else if (tokens.size() == 2 && isValidUsername(tokens.get(1))) {
+                            String userName = tokens.get(1);
+                            InetAddress userAddress = socket.getInetAddress();
+                            // TODO: check if user already exists in the list
+                            user = new User(userName, userAddress);
+                            ServerMain.activeUsers.add(user);
+                            send = ok();
+                        } else { // if no name was given or it contained space characters
+                            send = error("Invalid Input");
+                        }
+                    } else if (command.equals(ClientProtocol.BYE)) {
+                        ServerMain.activeUsers.remove(user);
+                        send = bye();
+                        receivedBYE = true;
+                    } else if (command.equals(ClientProtocol.INFO)) {
+                        // TODO: list of users and their hosts
+                    }
+                    printer.println(send);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                receivedBYE = true;
+            }
+            // if got a BYE, then disconnect
+        }
     }
 
-    private void initReaderWriter() {
+    private boolean isValidUsername(String s) {
+        return s.matches("[A-Za-z0-9]{1,12}");
+    }
+
+    private boolean clientConnected() {
+        return socket.isConnected() && !receivedBYE;
+    }
+
+    private void initReaderPrinter() {
         try {
             reader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(
+            printer = new PrintWriter(
                     new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
         }
