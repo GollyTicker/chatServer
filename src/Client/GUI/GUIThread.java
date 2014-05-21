@@ -1,9 +1,15 @@
 package client.GUI;
 
+import client.Storage;
+
 /**
  * Created by Swaneet on 20.05.2014.
  */
 public class GUIThread extends Thread implements GUIServices {
+
+    public GUIThread(Storage storage) {
+
+    }
 
     @Override
     public void run() {

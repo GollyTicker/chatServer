@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Created by Swaneet on 20.05.2014.
  */
-public interface ChatServices {
-    // methoden, die die TCP, UDP threads der GUI anbieten.
+public interface StorageServices {
+    // methoden, die die Speicherung von synchronisierten Daten zwishcen den TCP/UDP threads und der GUI anbieten.
 
     public List<ChatMsg> getMesseages();
 

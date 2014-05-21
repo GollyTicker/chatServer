@@ -1,6 +1,7 @@
 package client;
 
 import client.GUI.GUIServices;
+import client.GUI.StorageServices;
 import utils.ServerProtocol;
 
 import java.io.*;
@@ -22,11 +23,13 @@ public class TCPThread extends Thread {
     GUIServices guiServices;
     public boolean keepRunning = true;
     String registeredUsername;
+    StorageServices storageServices;
 
-    public TCPThread(String tcpHostname, int tcpPort, GUIServices guiServices) {
+    public TCPThread(String tcpHostname, int tcpPort, GUIServices guiServices, StorageServices storage) {
         this.tcpHostname = tcpHostname;
         this.tcpPort = tcpPort;
         this.guiServices = guiServices;
+        this.storageServices = storage;
     }
 
     @Override
