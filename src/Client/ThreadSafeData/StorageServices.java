@@ -35,4 +35,7 @@ public interface StorageServices {
     // Z.b. wenn ein unerwarteter Fehler im TCP Thread kommt.
     // z.B. wenn der Anwender die GUI schließt.
     public void stop();
+
+    public void putChatLine(String message);
+    public String popChatLine();
 }
