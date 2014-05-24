@@ -17,6 +17,7 @@ public class ClientProtocol {
     public static final String NEWLINE = "\r\n";
     public static final String SPACE = " ";
     public static final int CLIENT_INFO_WAIT_MS = 3500; // millis to wait for sending INFO requests
+    public static final String CHAT_MSG_SEPERATOR = ":";
 
     // makes new request
     public static String new_(String userName) {
