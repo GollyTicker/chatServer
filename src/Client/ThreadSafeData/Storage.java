@@ -17,10 +17,11 @@ public class Storage implements StorageServices {
 
     private static volatile boolean keepRunning = true;
 
+    private static volatile String latestUserName = "";
     private static volatile Queue<ChatMsg> msgs = new LinkedList<ChatMsg>();
     private static volatile List<User> users = new ArrayList<User>();
     private static volatile BlockingQueue<String> userNameHolder = new ArrayBlockingQueue<>(1);
-    private static volatile BlockingQueue<String> chatMsgsQueue = new ArrayBlockingQueue<>(1);
+    private static volatile BlockingQueue<ChatMsg> chatMsgsQueue = new ArrayBlockingQueue<>(1);
 
     @Override
     public synchronized List<ChatMsg> getLatestMessages() {
@@ -50,7 +51,9 @@ public class Storage implements StorageServices {
     public String popUserName() {
 
         try {
-            return userNameHolder.take();
+            String userName =  userNameHolder.take();
+            latestUserName = userName;
+            return userName;
         } catch (InterruptedException e) {
             e.printStackTrace();
             return "abcd";
@@ -60,22 +63,27 @@ public class Storage implements StorageServices {
     }
 
     @Override
+    public String latestUserName() {
+        return latestUserName;
+    }
+
+    @Override
     public synchronized void stop() {
         keepRunning = false;
     }
 
     @Override
-    public void putChatLine(String message) {
+    public void putChatLine(ChatMsg message) {
         chatMsgsQueue.add(message);
     }
 
     @Override
-    public String popChatLine() {
+    public ChatMsg popChatLine() {
         try {
             return chatMsgsQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return "thread parse fick error";
+            return new ChatMsg("error", "thread parse fick error");
         }
     }
 

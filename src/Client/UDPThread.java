@@ -56,7 +56,10 @@ public class UDPThread extends Thread {
                     ds.receive(dp);
 
                     String msg = new String(dp.getData(), 0, dp.getLength());
-                    storageServices.putChatLine(msg);
+                    String userName = msg.split(":")[0];
+                    String message = msg.split(":")[1];
+
+                    storageServices.addChatMessage(new ChatMsg(userName,message));
                     gui.refreshChatMessages();
 
                 }
@@ -65,6 +68,7 @@ public class UDPThread extends Thread {
                 System.err.println("chat error " + se);
             }
         }
+
 
     }
 
@@ -77,19 +81,22 @@ public class UDPThread extends Thread {
         public void run() {
             System.out.println("something started");
             while (storageServices.isRunning()) {
-                String input = storageServices.popChatLine();
-                if (input == null) break;
+                ChatMsg input = storageServices.popChatLine();
+                System.out.println("der Input:"+ input);
                 sendToAll(input);
+
             }
         }
 
-        private void sendToAll(String input) {
-            byte[] data = input.getBytes();
+        private void sendToAll(ChatMsg input) {
+            byte[] data = input.toString().getBytes();
             for (User u : storageServices.getUserList()) {
                 try {
                     DatagramSocket socket = new DatagramSocket();
+
                     DatagramPacket output = new DatagramPacket(data,
                             data.length, u.host, udpPort);
+
                     socket.send(output);
                 } catch (IOException e) {
                     e.printStackTrace();

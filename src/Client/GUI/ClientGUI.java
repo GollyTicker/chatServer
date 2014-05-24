@@ -127,7 +127,8 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
             return;
         }
         if (o == sendMessage) {
-            storageServices.putChatLine(chatInputArea.getText());
+            ChatMsg chatMsg = new ChatMsg(storageServices.latestUserName(), chatInputArea.getText());
+            storageServices.putChatLine(chatMsg);
             System.out.println("Entered: " + chatInputArea.getText());
             return;
         }

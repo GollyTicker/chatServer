@@ -31,11 +31,13 @@ public interface StorageServices {
     public void putUserName(String userName);
     public String popUserName();
 
+    public String latestUserName();
+
     // alle Thread können hiermit die App schließen.
     // Z.b. wenn ein unerwarteter Fehler im TCP Thread kommt.
     // z.B. wenn der Anwender die GUI schließt.
     public void stop();
 
-    public void putChatLine(String message);
-    public String popChatLine();
+    public void putChatLine(ChatMsg message);
+    public ChatMsg popChatLine();
 }
