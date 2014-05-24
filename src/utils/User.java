@@ -29,7 +29,7 @@ public class User {
 
     @Override
     public String toString() {
-        return name + ServerProtocol.SPACE + host.getHostAddress();
+        return host.getHostAddress() + ServerProtocol.SPACE + name;
     }
 }
 

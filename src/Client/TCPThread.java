@@ -91,7 +91,7 @@ public class TCPThread extends Thread {
     private List<User> fromTokens(int numOfUsers, List<String> strings) throws UnknownHostException {
         List<User> ls = new ArrayList<User>();
         for (int i = 0; i < numOfUsers * 2; i += 2) {
-            User u = new User(strings.get(i), InetAddress.getByName(strings.get(i + 1)));
+            User u = new User(strings.get(i + 1), InetAddress.getByName(strings.get(i)));
             ls.add(u);
         }
         return ls;
