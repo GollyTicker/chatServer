@@ -76,6 +76,10 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
             @Override
             public void windowClosing(WindowEvent e) {
                 storageServices.stop();
+                try {
+                    Thread.sleep(300);
+                }
+                catch (InterruptedException q) {}
             }
         });
     }
@@ -102,6 +106,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
         chatInputArea = new JTextField("write here");
+        chatInputArea.setColumns(35);
         sendMessage = new JButton("Send");
         sendMessage.addActionListener(this);
         southPanel.add(chatInputArea);

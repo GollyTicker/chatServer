@@ -35,9 +35,23 @@ public class TCPThread extends Thread {
         this.storageServices = storage;
     }
 
+    private class BYEsenderThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("BYE Thread started.");
+            while (storageServices.isRunning()) {}
+            sendByeToServer();
+            closeAll();
+        }
+        public BYEsenderThread() {
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("TCP Thread started.");
+
+        new BYEsenderThread().start();
 
         // falls Connection fehlschlägt, dann brich ab.
         if (!connectionToServerSuceeded()) return;

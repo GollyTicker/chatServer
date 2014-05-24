@@ -59,7 +59,7 @@ public class UDPThread extends Thread {
                     String userName = msg.split(":")[0];
                     String message = msg.split(":")[1];
 
-                    storageServices.addChatMessage(new ChatMsg(userName,message));
+                    storageServices.addChatMessage(new ChatMsg(userName, message));
                     gui.refreshChatMessages();
 
                 }
@@ -79,10 +79,9 @@ public class UDPThread extends Thread {
 
         @Override
         public void run() {
-            System.out.println("something started");
             while (storageServices.isRunning()) {
                 ChatMsg input = storageServices.popChatLine();
-                System.out.println("der Input:"+ input);
+                System.out.println("der Input:" + input);
                 sendToAll(input);
 
             }
