@@ -21,7 +21,7 @@ public class ClientMain {
         TCPThread tcp = new TCPThread(ServerProtocol.TCP_HOSTNAME, ServerProtocol.TCP_PORT, gui, storage);
 
         // Der UDP thread. UDP Thread needs to tell the GUI to get its messages.
-        UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT, /*gui,*/ storage);
+        UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT, storage,gui);
 
         // starten aller Threads
         //guiThread.start();
