@@ -3,6 +3,7 @@ package Client.GUI;
 import Client.ChatMsg;
 import Client.ThreadSafeData.StorageServices;
 import utils.ServerProtocol;
+import utils.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,10 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
     // for the chat room
     private JTextArea chatTextArea;
+    // for the chat room
+    private JTextField chatInputArea;
+
+    private JTextArea activeUsers;
 
     JPanel loginPanel;
 
@@ -37,7 +42,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     public ClientGUI(final StorageServices storageServices) {
         super("Chabo Chat");
 
-        setSize(400, 400);
+        setSize(600, 200);
 
         this.storageServices = storageServices;
 
@@ -47,9 +52,8 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
         //default value
         userNameTextField = new JTextField("");
-        userNameTextField.setSize(30,10);
-
-        userNameTextField.setBackground(Color.BLUE);
+        userNameTextField.setColumns(20);
+        userNameTextField.setBackground(Color.WHITE);
 
         // login button
         login = new JButton("Login");
@@ -57,13 +61,10 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
 
         loginPanel = new JPanel();
-        loginPanel.add(userNameLabel);
-        loginPanel.add(userNameTextField);
-        loginPanel.add(login);
+        loginPanel.add(userNameLabel, BorderLayout.NORTH);
+        loginPanel.add(userNameTextField, BorderLayout.CENTER);
+        loginPanel.add(login, BorderLayout.SOUTH);
         add(loginPanel, BorderLayout.CENTER);
-
-        // the chat room
-        // switchToChatMode();
 
         userNameTextField.addActionListener(this);
 
@@ -81,21 +82,33 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
     private void switchToChatMode() {
 
-        //set login panel invisibles
-        loginPanel.removeAll();
+        //set login panel invisible
         loginPanel.setVisible(false);
+        loginPanel.removeAll();
 
         JPanel centerPanel = new JPanel();
-        chatTextArea = new JTextArea("Chat", 20, 30);
+        chatTextArea = new JTextArea("Chat", 15, 30);
+        chatTextArea.setColumns(30);
+        chatTextArea.setRows(15);
         chatTextArea.setText("=== Connected ===" + "\n");
         chatTextArea.setEditable(false);
+        activeUsers = new JTextArea("");
+        activeUsers.setColumns(15);
+        activeUsers.setRows(15);
+        activeUsers.setEditable(false);
+        centerPanel.add(activeUsers);
+        centerPanel.add(new JScrollPane(chatTextArea), BorderLayout.NORTH);
 
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridBagLayout());
+        chatInputArea = new JTextField("write here");
         sendMessage = new JButton("Send");
         sendMessage.addActionListener(this);
+        southPanel.add(chatInputArea);
+        southPanel.add(sendMessage);
 
-        centerPanel.add(sendMessage);
-        centerPanel.add(new JScrollPane(chatTextArea), BorderLayout.NORTH);
-        add(centerPanel, BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
 
         revalidate();
     }
@@ -114,7 +127,8 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
             return;
         }
         if (o == sendMessage) {
-            System.out.println("Not implemented!");
+            storageServices.putChatLine(chatInputArea.getText());
+            System.out.println("Entered: " + chatInputArea.getText());
             return;
         }
     }
@@ -126,6 +140,14 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         }
         else {
             userNameLabel.setText(msg); // else display the error
+        }
+    }
+
+    @Override
+    public void refreshUserList() {
+        activeUsers.setText("");
+        for (User u:storageServices.getUserList()){
+            activeUsers.append(u.name + "\n");
         }
     }
 }

@@ -52,6 +52,7 @@ public class TCPThread extends Thread {
                 println(info());    // send the server an info command
                 List<String> tokens = readFromServer(); //  get response
                 updateLocalUserList(tokens);
+                guiServices.refreshUserList();
                 Thread.sleep(CLIENT_INFO_WAIT_MS);  // wait a few seconds
             } catch (Exception e) { // if anything goes wrong. safe-kill the app.
                 e.printStackTrace();

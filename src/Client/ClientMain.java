@@ -14,7 +14,6 @@ public class ClientMain {
 
         Storage storage = new Storage();    // thread-safe Storage anschmeißen
 
-        //GUIThread guiThread = new GUIThread(storage);
         ClientGUI gui = new ClientGUI(storage);  // die GUI hat Zugriff auf die Daten
 
         // Der TCP Thread hat Zugriff auf die Daten und auf Services der GUI

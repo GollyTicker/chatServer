@@ -10,4 +10,5 @@ public interface GUIServices {
 
     public void nameRegistrationResponse(String msg);   // der TCP Thread kann hier die Antwort auf die Anfrage versenden
 
+    public void refreshUserList();
 }
