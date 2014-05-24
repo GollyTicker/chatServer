@@ -12,8 +12,8 @@ public interface StorageServices {
     // Die Storage Services erlauben TCP-Thread, UDP-Thread und GUI-Thread indirekt miteinander zu kommunizieren
     // Diese werden von Storage implementiert.
 
-    // die GUI kann sich hier die Chat Nachrichten holen
-    public List<ChatMsg> getMessages();
+    // die GUI kann sich hier die Messages aus der Queue holen
+    public List<ChatMsg> getLatestMessages();
 
     // the UDP thread can add new Messages here
     public void addChatMessage(ChatMsg msg);

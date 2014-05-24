@@ -26,7 +26,6 @@ public class dummy_UDPServer {
             String recv = new String(recvPkt.getData(), "UTF-8");
             System.out.println("Received: " + recv);
 
-
             InetAddress address = recvPkt.getAddress();
             int destPort = recvPkt.getPort();
             String send = recv.toUpperCase();
