@@ -37,6 +37,8 @@ public class TCPThread extends Thread {
 
     @Override
     public void run() {
+        System.out.println("TCP Thread started.");
+
         // falls Connection fehlschlägt, dann brich ab.
         if (!connectionToServerSuceeded()) return;
 
@@ -101,7 +103,7 @@ public class TCPThread extends Thread {
     // a name could be found.
     private void registerName() {
         while (registeredUsername == null && storageServices.isRunning()) {
-            String userName = guiServices.getUserName();    // blokierender Aufruf der auf den UserNamen wartet.
+            String userName = storageServices.popUserName();    // blokierender Aufruf der auf den UserNamen wartet.
             println(new_(userName));    // send to the server
             System.out.println("Sent: " + userName);
             List<String> tokens;

@@ -3,12 +3,11 @@ package Server;
 import utils.ClientProtocol;
 import utils.User;
 
-import static utils.ServerProtocol.*;
-
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+
+import static utils.ServerProtocol.*;
 
 /**
  * Created by Swaneet on 20.05.2014.
@@ -104,7 +103,7 @@ public class ServerThread extends Thread {
     }
 
     private boolean isValidUsername(String s) {
-        return s.matches("[A-Za-z0-9]{1,35}");
+        return s.matches("[A-Za-z0-9]{1,20}");
     }
 
     private boolean clientConnected() {

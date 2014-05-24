@@ -42,6 +42,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
         //default value
         userNameTextField = new JTextField("");
+        userNameTextField.setSize(30,10);
 
         userNameTextField.setBackground(Color.BLUE);
 
@@ -51,7 +52,8 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
 
         loginPanel = new JPanel();
-        loginPanel.add(userNameLabel, userNameTextField);
+        loginPanel.add(userNameLabel);
+        loginPanel.add(userNameTextField);
         loginPanel.add(login);
         add(loginPanel, BorderLayout.CENTER);
 
@@ -96,27 +98,12 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         if (o == login) {
-            userNameStr = userNameTextField.getText();
-            notifyAll();
+            storageServices.putUserName(userNameTextField.getText());
             return;
         }
         if (o == sendMessage) {
             System.out.println("Not implemented!");
             return;
-        }
-    }
-
-    @Override
-    public synchronized String getUserName() {
-        try {
-            while(userNameStr.equals(""))
-                wait();
-            String user = new String(userNameStr);
-            userNameStr = "";
-            return user;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return "";
         }
     }
 

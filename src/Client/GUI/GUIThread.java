@@ -2,10 +2,6 @@ package Client.GUI;
 
 import Client.ThreadSafeData.Storage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 /**
  * Created by Swaneet on 20.05.2014.
  */
@@ -20,7 +16,7 @@ public class GUIThread extends Thread implements GUIServices {
 
     }
 
-    @Override
+    /*@Override
     public String getUserName() {
         // TODO: wait until user enters a name.
         //return "IvanMorozov";
@@ -30,7 +26,7 @@ public class GUIThread extends Thread implements GUIServices {
         } catch (IOException e) {
             return "IvanMorozov";
         }
-    }
+    }*/
 
     @Override
     public void nameRegistrationResponse(String msg) {
