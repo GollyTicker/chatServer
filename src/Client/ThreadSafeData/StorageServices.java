@@ -28,6 +28,9 @@ public interface StorageServices {
     // ob sie weiterarbeiten sollen oder nicht.
     public boolean isRunning();
 
+    public void putUserName(String userName);
+    public String popUserName();
+
     // alle Thread können hiermit die App schließen.
     // Z.b. wenn ein unerwarteter Fehler im TCP Thread kommt.
     // z.B. wenn der Anwender die GUI schließt.
