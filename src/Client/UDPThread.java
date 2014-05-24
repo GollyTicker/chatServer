@@ -26,8 +26,16 @@ public class UDPThread extends Thread {
     @Override
     public void run() {
         System.out.println("UDP Thread started.");
-        while (inAndOutRun()) {
+        Reciever r = new Reciever();
+        Sender s = new Sender();
 
+        r.start();
+        s.start();
+
+        while (r.isAlive() && s.isAlive()) {
+            if (!storageServices.isRunning()) {
+                break;
+            }
         }
 
     }
@@ -35,16 +43,36 @@ public class UDPThread extends Thread {
     class Reciever extends Thread {
 
 
-        //addchatmessage
-        //refresh chat message
+        public Reciever() {
+        }
+
+        @Override
+        public void run() {
+            try {
+                DatagramSocket ds = new DatagramSocket(udpPort);
+                while (storageServices.isRunning()) {
+                    byte[] buffer = new byte[65507];
+                    DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
+                    ds.receive(dp);
+
+                    String msg = new String(dp.getData(), 0, dp.getLength());
+                    storageServices.putChatLine(msg);
+                    gui.refreshChatMessages();
+
+                }
+
+            } catch (IOException se) {
+                System.err.println("chat error " + se);
+            }
+        }
+
     }
-
-
 
 
     class Sender extends Thread {
         public Sender() {
         }
+
         @Override
         public void run() {
             System.out.println("something started");
@@ -70,11 +98,6 @@ public class UDPThread extends Thread {
 
         }
 
-    }
-
-
-    private boolean inAndOutRun() {
-        return false;
     }
 
 
