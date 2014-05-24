@@ -1,5 +1,6 @@
 package Client.GUI;
 
+import Client.ChatMsg;
 import Client.ThreadSafeData.StorageServices;
 import utils.ServerProtocol;
 
@@ -7,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 /*
@@ -31,8 +34,10 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
     private StorageServices storageServices;
 
-    public ClientGUI(StorageServices storageServices) {
+    public ClientGUI(final StorageServices storageServices) {
         super("Chabo Chat");
+
+        setSize(400, 400);
 
         this.storageServices = storageServices;
 
@@ -63,9 +68,15 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         userNameTextField.addActionListener(this);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 600);
         setVisible(true);
-        userNameTextField.requestFocus();
+        userNameTextField.requestFocusInWindow();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                storageServices.stop();
+            }
+        });
     }
 
     private void switchToChatMode() {
@@ -74,26 +85,27 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         loginPanel.removeAll();
         loginPanel.setVisible(false);
 
-        chatTextArea = new JTextArea("=== Connected ===\n", 80, 80);
-        chatTextArea.setVisible(false);
-        JPanel centerPanel = new JPanel(new GridLayout(1, 1));
+        JPanel centerPanel = new JPanel();
+        chatTextArea = new JTextArea("Chat", 20, 30);
+        chatTextArea.setText("=== Connected ===" + "\n");
         chatTextArea.setEditable(false);
 
         sendMessage = new JButton("Send");
-        sendMessage.setVisible(false);
         sendMessage.addActionListener(this);
 
         centerPanel.add(sendMessage);
-        centerPanel.add(new JScrollPane(chatTextArea));
-        add(centerPanel, BorderLayout.CENTER);
+        centerPanel.add(new JScrollPane(chatTextArea), BorderLayout.NORTH);
+        add(centerPanel, BorderLayout.NORTH);
+
+        revalidate();
     }
 
-    //
-    void append(String str) {
-        chatTextArea.append(str);
-        chatTextArea.setCaretPosition(chatTextArea.getText().length() - 1);
+    @Override
+    public void refreshChatMessages() {
+        for(ChatMsg msg:storageServices.getLatestMessages()){
+            chatTextArea.append(msg.toString() + "\n");
+        }
     }
-
 
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();

@@ -29,6 +29,11 @@ public class GUIThread extends Thread implements GUIServices {
     }*/
 
     @Override
+    public void refreshChatMessages() {
+
+    }
+
+    @Override
     public void nameRegistrationResponse(String msg) {
 
     }
