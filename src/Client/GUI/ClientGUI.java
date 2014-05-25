@@ -105,7 +105,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
-        chatInputArea = new JTextField("write here");
+        chatInputArea = new JTextField("say hello");
         chatInputArea.setColumns(35);
         sendMessage = new JButton("Send");
         sendMessage.addActionListener(this);
@@ -115,7 +115,10 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
-        revalidate();
+        revalidate(); // force redraw frames
+
+        chatInputArea.requestFocusInWindow();
+        chatInputArea.selectAll();
     }
 
     @Override
@@ -134,7 +137,9 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         if (o == sendMessage) {
             ChatMsg chatMsg = new ChatMsg(storageServices.latestUserName(), chatInputArea.getText());
             storageServices.putChatLine(chatMsg);
-            System.out.println("Entered: " + chatInputArea.getText());
+            chatInputArea.setText("");
+            chatInputArea.requestFocusInWindow();
+            // System.out.println("Entered: " + chatInputArea.getText());
             return;
         }
     }

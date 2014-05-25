@@ -81,7 +81,7 @@ public class UDPThread extends Thread {
         public void run() {
             while (storageServices.isRunning()) {
                 ChatMsg input = storageServices.popChatLine();
-                System.out.println("der Input:" + input);
+                System.out.println("Der Input:" + input);
                 sendToAll(input);
 
             }
