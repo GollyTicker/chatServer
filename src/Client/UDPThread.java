@@ -5,6 +5,7 @@ import Client.ThreadSafeData.StorageServices;
 import utils.User;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -51,11 +52,11 @@ public class UDPThread extends Thread {
             try {
                 DatagramSocket ds = new DatagramSocket(udpPort);
                 while (storageServices.isRunning()) {
-                    byte[] buffer = new byte[65507];
+                    byte[] buffer = new byte[8*(20 + 1 + 1 + 100)]; // jeer UFT Char kann bis zu 8 Bytes lang sein
                     DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
                     ds.receive(dp);
 
-                    String msg = new String(dp.getData(), 0, dp.getLength());
+                    String msg = new String(dp.getData(), 0, dp.getLength(),"UTF-8");
                     System.out.println("Reveiced over UDP" + msg);
                     try {
                         String userName = msg.split(":")[0];
@@ -92,7 +93,12 @@ public class UDPThread extends Thread {
         }
 
         private void sendToAll(ChatMsg input) {
-            byte[] data = input.toString().getBytes();
+            byte[] data = new byte[8*(20 + 1 + 1 + 100)];
+            try {
+                data = input.toString().getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                data = input.toString().getBytes();
+            }
             for (User u : storageServices.getUserList()) {
                 try {
                     DatagramSocket socket = new DatagramSocket();
