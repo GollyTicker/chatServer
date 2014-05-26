@@ -23,6 +23,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     private JLabel userNameLabel;
     //testfield for enter the username
     private JTextField userNameTextField;
+    private static final int userNameTextFieldChars = 20;
     //buttons
     private JButton login, sendMessage;
 
@@ -30,19 +31,32 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
     // for the chat room
     private JTextArea chatTextArea;
+    private static final int chatTextAreaColumns = 30;
+    private static final int chatTextAreaRows = 15;
     // for the chat room
     private JTextField chatInputArea;
+    private static final int chatInputAreaChars = 35;
 
     private JTextArea activeUsers;
+    private static final int activeUsersColumns = 20;
+    private static final int activeUsersRows = 15;
 
     JPanel loginPanel;
 
     private StorageServices storageServices;
 
+    private static final int centerW = 200;
+    private static final int centerH = 300;
+
+    private static final int windowW = 700;
+    private static final int windowH = 300;
+
+    private static final long THREAD_GUI_WAIT_MS = 300;
+
     public ClientGUI(final StorageServices storageServices) {
         super("Chabo Chat");
 
-        setSize(700, 300);
+        setSize(windowW, windowH);
 
         this.storageServices = storageServices;
 
@@ -52,7 +66,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
 
         //default value
         userNameTextField = new JTextField("");
-        userNameTextField.setColumns(20);
+        userNameTextField.setColumns(userNameTextFieldChars);
         userNameTextField.setBackground(Color.WHITE);
 
         // login button
@@ -77,7 +91,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
             public void windowClosing(WindowEvent e) {
                 storageServices.stop();
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(THREAD_GUI_WAIT_MS);
                 }
                 catch (InterruptedException q) {}
             }
@@ -91,15 +105,15 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         loginPanel.removeAll();
 
         JPanel centerPanel = new JPanel();
-        centerPanel.setSize(200,300);
-        chatTextArea = new JTextArea("Chat", 15, 30);
-        chatTextArea.setColumns(30);
-        chatTextArea.setRows(15);
+        centerPanel.setSize(centerW, centerH);
+        chatTextArea = new JTextArea("Chat", 1, 1);
+        chatTextArea.setColumns(chatTextAreaColumns);
+        chatTextArea.setRows(chatTextAreaRows);
         chatTextArea.setText("=== Connected ===" + "\n");
         chatTextArea.setEditable(false);
         activeUsers = new JTextArea("");
-        activeUsers.setColumns(20);
-        activeUsers.setRows(15);
+        activeUsers.setColumns(activeUsersColumns);
+        activeUsers.setRows(activeUsersRows);
         activeUsers.setEditable(false);
         centerPanel.add(activeUsers);
         centerPanel.add(new JScrollPane(chatTextArea), BorderLayout.NORTH);
@@ -107,7 +121,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
         chatInputArea = new JTextField("say hello");
-        chatInputArea.setColumns(35);
+        chatInputArea.setColumns(chatInputAreaChars);
         sendMessage = new JButton("Send");
         sendMessage.addActionListener(this);
         southPanel.add(chatInputArea);

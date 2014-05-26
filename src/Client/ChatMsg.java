@@ -17,11 +17,11 @@ public class ChatMsg {
         String singleLineMsg = rawMsg.replace('\n', ' ');  // darf keine NEWLINES enthalten
         String finalMsg = "";
         // darf hoechstens 100 Zeichen lang sein.
-        if(singleLineMsg.length() < 100) {
+        if(singleLineMsg.length() < ClientProtocol.MAX_CHATMSG_LENGTH) {
             finalMsg = singleLineMsg;
         }
         else {
-            finalMsg = singleLineMsg.substring(0,99);
+            finalMsg = singleLineMsg.substring(0,ClientProtocol.MAX_CHATMSG_LENGTH-1);
         }
         this.msg = finalMsg;
     }

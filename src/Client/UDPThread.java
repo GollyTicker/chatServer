@@ -14,6 +14,7 @@ import java.net.DatagramSocket;
  * Created by Swaneet on 20.05.2014.
  */
 public class UDPThread extends Thread {
+    private static final int UTF_CHAT_MSG_BYTESIZE = 8*(20 + 1 + 1 + 100); // jeder UFT Char kann bis zu 8 Bytes lang sein
     StorageServices storageServices;
     int udpPort;
     GUIServices gui;
@@ -53,7 +54,7 @@ public class UDPThread extends Thread {
             try {
                 DatagramSocket ds = new DatagramSocket(udpPort);
                 while (storageServices.isRunning()) {
-                    byte[] buffer = new byte[8*(20 + 1 + 1 + 100)]; // jeer UFT Char kann bis zu 8 Bytes lang sein
+                    byte[] buffer = new byte[UTF_CHAT_MSG_BYTESIZE];
                     DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
                     ds.receive(dp);
 
@@ -94,7 +95,7 @@ public class UDPThread extends Thread {
         }
 
         private void sendToAll(ChatMsg input) {
-            byte[] data = new byte[8*(20 + 1 + 1 + 100)];
+            byte[] data = new byte[UTF_CHAT_MSG_BYTESIZE];
             try {
                 data = input.toString().getBytes("UTF-8");
             } catch (UnsupportedEncodingException e) {
