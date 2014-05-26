@@ -43,13 +43,6 @@ public class ServerMain {
     }
 
     public void serverRun() throws IOException {
-        // default users
-        /*
-        activeUsers.add(new User("IvanMorozov", getByName("localhost")));
-        activeUsers.add(new User("Blubb", getByName("haw-hamburg.de")));
-        activeUsers.add(new User("Denkte", getByName("desy.de")));
-        */
-
         // beim start des Servers wird das TCP socket angelegt und öffnen
         // für jeden Client einen neuen Thread
         welcomeSocket = new ServerSocket(ServerProtocol.TCP_PORT);

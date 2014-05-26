@@ -42,7 +42,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     public ClientGUI(final StorageServices storageServices) {
         super("Chabo Chat");
 
-        setSize(600, 300);
+        setSize(700, 300);
 
         this.storageServices = storageServices;
 
@@ -98,7 +98,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         chatTextArea.setText("=== Connected ===" + "\n");
         chatTextArea.setEditable(false);
         activeUsers = new JTextArea("");
-        activeUsers.setColumns(15);
+        activeUsers.setColumns(20);
         activeUsers.setRows(15);
         activeUsers.setEditable(false);
         centerPanel.add(activeUsers);
@@ -159,7 +159,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     public void refreshUserList() {
         activeUsers.setText("");
         for (User u:storageServices.getUserList()){
-            activeUsers.append(u.name + "\n");
+            activeUsers.append(u + "\n");
         }
     }
 }
