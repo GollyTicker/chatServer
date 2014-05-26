@@ -2,6 +2,7 @@ package Client;
 
 import Client.GUI.GUIServices;
 import Client.ThreadSafeData.StorageServices;
+import utils.ClientProtocol;
 import utils.User;
 
 import java.io.IOException;
@@ -59,8 +60,8 @@ public class UDPThread extends Thread {
                     String msg = new String(dp.getData(), 0, dp.getLength(),"UTF-8");
                     System.out.println("Reveiced over UDP" + msg);
                     try {
-                        String userName = msg.split(":")[0];
-                        String message = msg.split(":")[1];
+                        String userName = msg.split(ClientProtocol.CHAT_MSG_SEPERATOR)[0];
+                        String message = msg.split(ClientProtocol.CHAT_MSG_SEPERATOR)[1];
                         storageServices.addChatMessage(new ChatMsg(userName, message));
                         gui.refreshChatMessages();
                     } catch (ArrayIndexOutOfBoundsException e) {    // if input was malformed

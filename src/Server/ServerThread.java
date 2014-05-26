@@ -26,7 +26,7 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
 
-        System.out.println("New Thread at time: " + System.currentTimeMillis());
+        System.out.println(getId() + "# - New Thread at time: " + System.currentTimeMillis());
 
         // zu Beginn werden die IO Streams initialisiert
         initReaderPrinter();
@@ -57,8 +57,8 @@ public class ServerThread extends Thread {
                 // ******************* END Main Commands ***************************
 
                 println(send);
-            } catch (IOException e) {   // if anything happens in an iteration, print it out and end the loop.
-                System.out.println(e.getMessage());
+            } catch (Exception e) {   // if anything happens in an iteration, print it out and end the loop.
+                System.out.println(e);
                 receivedBYE = true;
             }
         }
@@ -88,7 +88,7 @@ public class ServerThread extends Thread {
     // forcing flush everytime to send the message over network.
     // also allows us to write debug statements here.
     private void println(String str) {
-        System.out.println("To " + user + " send:" + str);
+        System.out.println(getId() + "# - To " + user + " send:" + str);
         printer.println(str);
         printer.flush();
     }

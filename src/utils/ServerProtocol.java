@@ -19,7 +19,6 @@ public class ServerProtocol {
 
     public static final String BYE = "BYE";
     public static final String LIST = "LIST";
-    public static final String NEWLINE = "\r\n";
     public static final String SPACE = " ";
 
     // implements the list response
