@@ -17,7 +17,7 @@ public class ClientMain {
         ClientGUI gui = new ClientGUI(storage);  // die GUI hat Zugriff auf die Daten
 
         // Der TCP Thread hat Zugriff auf die Daten und auf Services der GUI
-        TCPThread tcp = new TCPThread(ServerProtocol.TCP_HOSTNAME, ServerProtocol.TCP_PORT, gui, storage);
+        TCPThread tcp = new TCPThread(ServerProtocol.SERVER_HOSTNAME, ServerProtocol.TCP_PORT, gui, storage);
 
         // Der UDP thread. UDP Thread needs to tell the GUI to get its messages.
         UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT, storage,gui);
