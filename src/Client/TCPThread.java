@@ -2,6 +2,7 @@ package Client;
 
 import Client.GUI.GUIServices;
 import Client.ThreadSafeData.StorageServices;
+import utils.ClientProtocol;
 import utils.User;
 
 import java.io.*;
@@ -51,7 +52,7 @@ public class TCPThread extends Thread {
     public void run() {
         System.out.println("TCP Thread started.");
 
-        new BYEsenderThread().start();
+        //new BYEsenderThread().start();
 
         // falls Connection fehlschlägt, dann brich ab.
         if (!connectionToServerSuceeded()) return;
@@ -74,6 +75,7 @@ public class TCPThread extends Thread {
             }
         }
         // if the app is supposed to stop, then close the resources
+        sendByeToServer();
         closeAll();
     }
 
