@@ -83,7 +83,7 @@ public class Storage implements StorageServices {
             return chatMsgsQueue.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return new ChatMsg("error", "thread parse fick error");
+            return new ChatMsg("asdf", "thread thread");
         }
     }
 
