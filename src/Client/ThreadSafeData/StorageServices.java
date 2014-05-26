@@ -40,4 +40,8 @@ public interface StorageServices {
 
     public void putChatLine(ChatMsg message);
     public ChatMsg popChatLine();
+
+    public void guiQuittable();     // blocks as logn as the server hasnt reacted with a BYE.
+
+    public void guiMayQuit();
 }

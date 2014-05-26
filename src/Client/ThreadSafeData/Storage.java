@@ -22,6 +22,7 @@ public class Storage implements StorageServices {
     private static volatile List<User> users = new ArrayList<User>();
     private static volatile BlockingQueue<String> userNameHolder = new ArrayBlockingQueue<>(1);
     private static volatile BlockingQueue<ChatMsg> chatMsgsQueue = new ArrayBlockingQueue<>(1);
+    private static volatile BlockingQueue<String> guiQuitter = new ArrayBlockingQueue<>(1);
 
     @Override
     public synchronized List<ChatMsg> getLatestMessages() {
@@ -85,6 +86,19 @@ public class Storage implements StorageServices {
             e.printStackTrace();
             return new ChatMsg("asdf", "thread thread");
         }
+    }
+
+    @Override
+    public void guiQuittable() {
+        try {
+            guiQuitter.take();
+            System.out.println("May quit now.");
+        } catch (InterruptedException e) {}
+    }
+
+    @Override
+    public void guiMayQuit() {
+        guiQuitter.add("");
     }
 
     @Override

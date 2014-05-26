@@ -90,6 +90,8 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
             @Override
             public void windowClosing(WindowEvent e) {
                 storageServices.stop();
+                System.out.println("Quitting...");
+                storageServices.guiQuittable();
                 try {
                     Thread.sleep(THREAD_GUI_WAIT_MS);
                 }

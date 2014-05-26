@@ -73,9 +73,7 @@ public class TCPThread extends Thread {
                 storageServices.stop();
             }
         }
-        // if the app is supposed to stop, then send a BYE message to the server
-        // and close the resources
-        sendByeToServer();
+        // if the app is supposed to stop, then close the resources
         closeAll();
     }
 
@@ -90,6 +88,7 @@ public class TCPThread extends Thread {
         println(bye());
         try {
             reader.readLine();  // receive response and ignore it
+            storageServices.guiMayQuit();
         } catch (IOException e) {
         }
         storageServices.stop(); // sicherheitshalber nochmal stoppen
