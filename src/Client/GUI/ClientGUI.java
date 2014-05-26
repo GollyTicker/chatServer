@@ -42,7 +42,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
     public ClientGUI(final StorageServices storageServices) {
         super("Chabo Chat");
 
-        setSize(600, 200);
+        setSize(600, 300);
 
         this.storageServices = storageServices;
 
@@ -91,6 +91,7 @@ public class ClientGUI extends JFrame implements ActionListener, GUIServices {
         loginPanel.removeAll();
 
         JPanel centerPanel = new JPanel();
+        centerPanel.setSize(200,300);
         chatTextArea = new JTextArea("Chat", 15, 30);
         chatTextArea.setColumns(30);
         chatTextArea.setRows(15);

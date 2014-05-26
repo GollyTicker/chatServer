@@ -23,23 +23,8 @@ public class ClientMain {
         UDPThread udp = new UDPThread(ClientProtocol.UDP_PORT, storage,gui);
 
         // starten aller Threads
-        //guiThread.start();
         tcp.start();
         udp.start();
-
-        // Some Sample ChatMessages
-        /*try {
-            Thread.sleep(2500);
-            storage.addChatMessage(new ChatMsg("Superman", "Hello World'! '' sdf :D"));
-            gui.refreshChatMessages();
-            Thread.sleep(500);
-            storage.addChatMessage(new ChatMsg("IvanMorozov", "This is my second staement"));
-            gui.refreshChatMessages();
-            Thread.sleep(500);
-            storage.addChatMessage(new ChatMsg("SwaneetSahoo", "Third statement!!"));
-            gui.refreshChatMessages();
-        } catch (InterruptedException e) {
-        }*/
     }
 
 }
