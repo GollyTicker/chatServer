@@ -56,16 +56,20 @@ public class UDPThread extends Thread {
                     ds.receive(dp);
 
                     String msg = new String(dp.getData(), 0, dp.getLength());
-                    String userName = msg.split(":")[0];
-                    String message = msg.split(":")[1];
-
-                    storageServices.addChatMessage(new ChatMsg(userName, message));
-                    gui.refreshChatMessages();
+                    System.out.println("Reveiced over UDP" + msg);
+                    try {
+                        String userName = msg.split(":")[0];
+                        String message = msg.split(":")[1];
+                        storageServices.addChatMessage(new ChatMsg(userName, message));
+                        gui.refreshChatMessages();
+                    } catch (ArrayIndexOutOfBoundsException e) {    // if input was malformed
+                        System.out.println("Invalid UDP Input:" + msg);
+                    }
 
                 }
 
             } catch (IOException se) {
-                System.err.println("chat error " + se);
+                System.err.println("Generic Error " + se);
             }
         }
 

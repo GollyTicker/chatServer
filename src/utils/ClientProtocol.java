@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ClientProtocol {
 
-    public static final int UDP_PORT = 50000;
+    public static final int UDP_PORT = 50001;
 
     public static final String INFO = "INFO";
     public static final String BYE = "BYE";
