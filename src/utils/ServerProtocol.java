@@ -12,7 +12,7 @@ public class ServerProtocol {
 
     public static final int TCP_PORT = 50000;
 
-    public static final String SERVER_HOSTNAME = "lab25";
+    public static final String SERVER_HOSTNAME = "lab22";
 
     public static final String OK = "OK";
     public static final String ERROR = "ERROR";

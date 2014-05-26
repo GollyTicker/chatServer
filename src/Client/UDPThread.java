@@ -59,7 +59,7 @@ public class UDPThread extends Thread {
                     ds.receive(dp);
 
                     String msg = new String(dp.getData(), 0, dp.getLength(),"UTF-8");
-                    System.out.println("Reveiced over UDP" + msg);
+                    System.out.println("Reveiced over UDP: " + msg);
                     try {
                         String userName = msg.split(ClientProtocol.CHAT_MSG_SEPERATOR)[0];
                         String message = msg.split(ClientProtocol.CHAT_MSG_SEPERATOR)[1];
@@ -68,9 +68,8 @@ public class UDPThread extends Thread {
                     } catch (ArrayIndexOutOfBoundsException e) {    // if input was malformed
                         System.out.println("Invalid UDP Input:" + msg);
                     }
-
                 }
-
+                System.out.println("UDP Thread ended.");
             } catch (IOException se) {
                 System.err.println("Generic Error " + se);
             }
